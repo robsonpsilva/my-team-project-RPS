@@ -8,7 +8,7 @@ export default class ProductList{
         // the dataSource will return a Promise...so you can use await to resolve it.
         const list = await this.dataSource.getData();
         
-        const idsToFilter = ['880RR', '985RF', '985PR', '344YJ'];
+        const idsToFilter = ["880RR", "985RF", "985PR", "344YJ"];
 
         const filterdList = list.filter(item => idsToFilter.includes(item.Id));
 
@@ -16,9 +16,9 @@ export default class ProductList{
         this.renderList(filterdList);
     }
     renderList(list) {
-        this.listElement.innerHTML = '';
+        this.listElement.innerHTML = "";
         const htmlStrings = list.map(this.productCardTemplate);
-        this.listElement.insertAdjacentHTML('afterbegin', htmlStrings.join(''));
+        this.listElement.insertAdjacentHTML("afterbegin", htmlStrings.join(""));
     }
     
     productCardTemplate(product){
