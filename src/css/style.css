@@ -210,6 +210,28 @@ button {
   font-size: var(--small-font);
   /* max-height: 120px; */
   align-items: center;
+  position: relative;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #cc0000;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.remove-btn:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  transform: scale(1.2);
 }
 
 .cart-card__image {

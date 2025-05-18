@@ -1,57 +1,69 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart");
+  const cartItems = getLocalStorage("so-cart") || [];
 
-  let htmlItems = []; // Inicializa como um array vazio por padrão
+  const cartFooter = document.querySelector(".cart-footer");
+  const totalElement = document.querySelector(".cart-total");
 
-  if (cartItems && Array.isArray(cartItems)) {
-    htmlItems = cartItems.map((item) => cartItemTemplate(item));
+  if (Array.isArray(cartItems) && cartItems.length > 0) {
+    const htmlItems = cartItems.map((item, index) =>
+      cartItemTemplate(item, index),
+    );
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
-    const totalListPrice = setTotal(cartItems);
-    document.querySelector(".cart-total").textContent = `Total: ${totalListPrice}`;
-    toggleHide();
-  } else {
 
+    const totalListPrice = setTotal(cartItems);
+    totalElement.textContent = `Total: $${totalListPrice}`;
+
+    cartFooter.classList.remove("hide");
+    setupRemoveButtons();
+  } else {
     document.querySelector(".product-list").innerHTML =
-      "<p>The car is empty.</p>";
+      "<li>Your cart is empty 🛒😢</li>";
+
+    // Clear the total
+    totalElement.textContent = "";
+
+    // Hide the footer
+    cartFooter.classList.add("hide");
   }
 }
 
-function setTotal(itens){
+function setTotal(items) {
   let total = 0;
-  for (const item of itens) {
-    if (item && typeof item.ListPrice === "number") {
-      total += item.ListPrice;
+  for (const item of items) {
+    if (item && typeof item.FinalPrice === "number") {
+      total += item.FinalPrice;
     }
   }
-  return total;
+  return total.toFixed(2);
 }
 
-function toggleHide() {
-  const cartFooter = document.querySelector(".cart-footer");
-  if (cartFooter) {
-    cartFooter.classList.toggle("hide");
-  }
+function cartItemTemplate(item, index) {
+  return `<li class="cart-card divider">
+    <button class="remove-btn" data-index="${index}">❌ Remove</button>
+    <a href="#" class="cart-card__image">
+      <img src="${item.Image}" alt="${item.Name}" />
+    </a>
+    <a href="#">
+      <h2 class="card__name">${item.Name}</h2>
+    </a>
+    <p class="cart-card__color">${item.Colors[0].ColorName}</p>
+    <p class="cart-card__quantity">qty: 1</p>
+    <p class="cart-card__price">$${item.FinalPrice}</p>
+  </li>`;
 }
 
-function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
-    <img
-      src="${item.Image}"
-      alt="${item.Name}"
-    />
-  </a>
-  <a href="#">
-    <h2 class="card__name">${item.Name}</h2>
-  </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
-</li>`;
-
-  return newItem;
+function setupRemoveButtons() {
+  document.querySelectorAll(".remove-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = parseInt(btn.dataset.index);
+      let cart = getLocalStorage("so-cart") || [];
+      cart.splice(index, 1); // remove the item at the clicked index
+      setLocalStorage("so-cart", cart);
+      renderCartContents(); // re-render the cart
+    });
+  });
 }
 
 renderCartContents();

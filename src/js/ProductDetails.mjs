@@ -1,4 +1,3 @@
-
 import { setLocalStorage} from "./utils.mjs";
 export default class ProductDetail{
     constructor(productId, dataSource){
