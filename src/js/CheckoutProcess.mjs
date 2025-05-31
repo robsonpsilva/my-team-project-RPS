@@ -142,8 +142,8 @@ export default class CheckoutProcess {
                 },
                 body: orderData,
             };
-            
-            const response = await fetch(`http://localhost:5000/process-checkout`, options).then(this.convertToJson);
+            console.log("Opções da requisição:", options); 
+            const response = await fetch(`http://wdd330-backend.onrender.com/checkout`, options).then(this.convertToJson);
 
             // Verifica se a resposta da requisição foi bem-sucedida (status 2xx)
             if (response.ok) {
