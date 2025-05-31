@@ -31,6 +31,7 @@ export default class CheckoutProcess {
         if (checkoutButton){
             
             checkoutButton.addEventListener("click", () => {
+                event.preventDefault()
                 const cartItems = getLocalStorage("so-cart") || [];
                 this.packageItens(cartItems)});
         }
@@ -123,19 +124,26 @@ export default class CheckoutProcess {
         return {total: total, 
             shipping: shippingTotal}   
     }
-
+    convertToJson(res) {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw new Error("Bad Response");
+        }
+    }
     // --- Função para enviar o pedido ---
     async sendOrderToBackend(orderData) {
         try {
-            const response = await fetch(this.baseURL, {
-                method: "POST", // Definindo o método HTTP como POST
+            
+            const options = {
+                method: "POST",
                 headers: {
-                    "Content-Type": "application/json" // Informando ao servidor que estamos enviando JSON
-                    // Se precisar de autenticação, adicione aqui:
-                    // 'Authorization': 'Bearer SEU_TOKEN_AQUI'
+                    "Content-Type": "application/json",
                 },
-                body: orderData // Converte o objeto JS para uma string JSON
-            });
+                body: JSON.stringify(orderData),
+            };
+            
+            const response = await fetch(`${this.baseURL}checkout/`, options).then(this.convertToJson);
 
             // Verifica se a resposta da requisição foi bem-sucedida (status 2xx)
             if (response.ok) {
