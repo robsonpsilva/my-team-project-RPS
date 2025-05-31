@@ -143,7 +143,7 @@ export default class CheckoutProcess {
                 body: orderData,
             };
             
-            const response = await fetch(`${this.baseURL}checkout/`, options).then(this.convertToJson);
+            const response = await fetch(`http://localhost:5000/process-checkout`, options).then(this.convertToJson);
 
             // Verifica se a resposta da requisição foi bem-sucedida (status 2xx)
             if (response.ok) {

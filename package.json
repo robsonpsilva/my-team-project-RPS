@@ -3,14 +3,17 @@
   "version": "2.0.0",
   "description": "Boilerplate for WDD 330 SleepOutside project",
   "main": "main.js",
+  "type": "module",
   "scripts": {
     "preview": "vite preview",
     "start": "vite",
     "build": "vite build --emptyOutDir",
     "lint": "eslint *.js src/**/*.js",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
-    "test": "jest"
-  },
+    "test": "jest",
+    "server": "node server.js",
+    "dev": "concurrently \"npm run server.js\" \"npm run start\""
+},
   "author": "Shane Thompson",
   "license": "ISC",
   "devDependencies": {
@@ -34,6 +37,10 @@
     "last 3 safari versions"
   ],
   "dependencies": {
-    "lint": "^0.8.19"
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lint": "^0.8.19",
+    "node-fetch": "^3.3.2"
   }
 }
