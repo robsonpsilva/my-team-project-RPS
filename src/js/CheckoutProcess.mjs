@@ -140,7 +140,7 @@ export default class CheckoutProcess {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(orderData),
+                body: orderData,
             };
             
             const response = await fetch(`${this.baseURL}checkout/`, options).then(this.convertToJson);
