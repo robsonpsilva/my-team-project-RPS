@@ -31,7 +31,6 @@ export default class CheckoutProcess {
         if (checkoutButton){
             
             checkoutButton.addEventListener("click", () => {
-                event.preventDefault()
                 const cartItems = getLocalStorage("so-cart") || [];
                 this.packageItens(cartItems)});
         }
